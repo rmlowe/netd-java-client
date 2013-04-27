@@ -31,6 +31,7 @@ public class Enrollments {
 				new UsernamePasswordCredentials(args[1], args[2]));
 
 		try {
+			// This comment added on Dell Studio
 			final List<Record> enrollments = client.send(Commands
 					.getEnrollments());
 			for (Record e : sorted(enrollments, new Comparator<Record>() {
