@@ -32,6 +32,7 @@ public class Enrollments {
 
 		try {
 			// This comment added on Dell Studio
+			// This comment also added on Dell Studio
 			final List<Record> enrollments = client.send(Commands
 					.getEnrollments());
 			for (Record e : sorted(enrollments, new Comparator<Record>() {
