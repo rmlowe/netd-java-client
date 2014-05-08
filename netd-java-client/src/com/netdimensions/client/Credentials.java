@@ -28,4 +28,14 @@ public abstract class Credentials {
 			}
 		};
 	}
+
+	public static Credentials bearer(final String token) {
+		return new Credentials() {
+
+			@Override
+			public final String toString() {
+				return "Bearer " + token;
+			}
+		};
+	}
 }

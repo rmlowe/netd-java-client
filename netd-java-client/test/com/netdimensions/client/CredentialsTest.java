@@ -17,8 +17,19 @@ import org.junit.Test;
 
 public final class CredentialsTest {
 
+	/**
+	 * http://tools.ietf.org/html/rfc2617#section-2
+	 */
 	@Test
 	public final void testBasicToString() {
 		Assert.assertEquals("Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==", Credentials.basic("Aladdin", "open sesame").toString());
+	}
+
+	/**
+	 * http://tools.ietf.org/html/rfc6750#section-2.1
+	 */
+	@Test
+	public final void testBearerToString() {
+		Assert.assertEquals("Bearer mF_9.B5f-4.1JqM", Credentials.bearer("mF_9.B5f-4.1JqM").toString());
 	}
 }
