@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 1999-2013 NetDimensions Ltd.
+ * Copyright (c) 1999-2014 NetDimensions Ltd.
  *
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  */
 package com.netdimensions.client;
 
-import static org.apache.commons.lang3.StringUtils.defaultString;
+import static com.google.common.base.Strings.nullToEmpty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,8 +43,7 @@ public final class Commands {
 			parameters.add(new BasicNameValuePair("onBehalfOf", onBehalfOf));
 		}
 
-		return new Command<List<Article>>("userNews", false, parameters,
-				Article.PARSER);
+		return new Command<List<Article>>("userNews", false, parameters, Article.PARSER);
 	}
 
 	public static Command<List<Article>> getUserNews() {
@@ -58,8 +57,7 @@ public final class Commands {
 			parameters.add(new BasicNameValuePair("onBehalfOf", onBehalfOf));
 		}
 
-		return new Command<List<Record>>("enrollments", false, parameters,
-				Record.PARSER);
+		return new Command<List<Record>>("enrollments", false, parameters, Record.PARSER);
 	}
 
 	public static Command<List<Record>> getEnrollments() {
@@ -73,72 +71,47 @@ public final class Commands {
 			parameters.add(new BasicNameValuePair("onBehalfOf", onBehalfOf));
 		}
 
-		return new Command<List<Record>>("records", false, parameters,
-				Record.PARSER);
+		return new Command<List<Record>>("records", false, parameters, Record.PARSER);
 	}
 
 	public static Command<List<Record>> getRecords() {
 		return getRecords(null);
 	}
 
-	public static Command<List<EnrollmentRequest>> getEnrollmentRequests(
-			final boolean inbox, final Date since, final String filter,
-			final String onBehalfOf) {
-		return new Command<List<EnrollmentRequest>>("enrollment-requests",
-				false, com.netdimensions.util.Collections.concatenatedList(
-						inbox ? Collections
-								.singletonList(new BasicNameValuePair("inbox",
-										Boolean.toString(true))) : Collections
-								.<NameValuePair> emptyList(), Arrays.asList(
-								new BasicNameValuePair("since", Dates
-										.html5String(since)),
-								new BasicNameValuePair("filter",
-										defaultString(filter)),
-								new BasicNameValuePair("on-behalf-of",
-										defaultString(onBehalfOf)),
-								new BasicNameValuePair("format", "xml"))),
+	public static Command<List<EnrollmentRequest>> getEnrollmentRequests(final boolean inbox, final Date since, final String filter, final String onBehalfOf) {
+		return new Command<List<EnrollmentRequest>>("enrollment-requests", false, com.netdimensions.util.Collections.concatenatedList(
+				inbox ? Collections.singletonList(new BasicNameValuePair("inbox", Boolean.toString(true))) : Collections.<NameValuePair> emptyList(), Arrays
+						.asList(new BasicNameValuePair("since", Dates.html5String(since)), new BasicNameValuePair("filter", nullToEmpty(filter)),
+								new BasicNameValuePair("on-behalf-of", nullToEmpty(onBehalfOf)), new BasicNameValuePair("format", "xml"))),
 				EnrollmentRequest.PARSER);
 	}
 
-	public static Command<Void> approveEnrollmentRequest(
-			final String requestId, final String stepId) {
-		return new Command<Void>("enrollment-request-approver", true,
-				Arrays.asList(new BasicNameValuePair("request-id",
-						defaultString(requestId)), new BasicNameValuePair(
-						"step-id", defaultString(stepId)),
-						new BasicNameValuePair("format", "xml")),
-				new Function<Element, Void>() {
-					@Override
-					public final Void value(final Element e) {
-						return null;
-					}
-				});
+	public static Command<Void> approveEnrollmentRequest(final String requestId, final String stepId) {
+		return new Command<Void>("enrollment-request-approver", true, Arrays.asList(new BasicNameValuePair("request-id", nullToEmpty(requestId)),
+				new BasicNameValuePair("step-id", nullToEmpty(stepId)), new BasicNameValuePair("format", "xml")), new Function<Element, Void>() {
+			@Override
+			public final Void value(final Element e) {
+				return null;
+			}
+		});
 	}
 
-	public static Command<Void> denyEnrollmentRequest(final String requestId,
-			final String stepId, final String comments) {
-		return new Command<Void>("enrollment-request-denier", true,
-				Arrays.asList(new BasicNameValuePair("request-id",
-						defaultString(requestId)), new BasicNameValuePair(
-						"step-id", defaultString(stepId)),
-						new BasicNameValuePair("comments",
-								defaultString(comments)),
-						new BasicNameValuePair("format", "xml")),
-				new Function<Element, Void>() {
-					@Override
-					public final Void value(final Element e) {
-						return null;
-					}
-				});
+	public static Command<Void> denyEnrollmentRequest(final String requestId, final String stepId, final String comments) {
+		return new Command<Void>("enrollment-request-denier", true, Arrays.asList(new BasicNameValuePair("request-id", nullToEmpty(requestId)),
+				new BasicNameValuePair("step-id", nullToEmpty(stepId)), new BasicNameValuePair("comments", nullToEmpty(comments)), new BasicNameValuePair(
+						"format", "xml")), new Function<Element, Void>() {
+			@Override
+			public final Void value(final Element e) {
+				return null;
+			}
+		});
 	}
 
-	public static Command<List<EnrollmentRequest>> getEnrollmentRequests(
-			boolean inbox, Date since, String filter) {
+	public static Command<List<EnrollmentRequest>> getEnrollmentRequests(boolean inbox, Date since, String filter) {
 		return getEnrollmentRequests(inbox, since, filter, null);
 	}
 
-	public static Command<Module> getModule(final String id,
-			final String onBehalfOf) {
+	public static Command<Module> getModule(final String id, final String onBehalfOf) {
 		final List<NameValuePair> parameters = new ArrayList<NameValuePair>();
 		parameters.add(new BasicNameValuePair("id", id));
 
@@ -146,12 +119,11 @@ public final class Commands {
 			parameters.add(new BasicNameValuePair("onBehalfOf", onBehalfOf));
 		}
 
-		return new Command<Module>("module", false, parameters,
-				new Function<Element, Module>() {
-					@Override
-					public final Module value(final Element arg) {
-						return Module.valueOf(arg);
-					}
-				});
+		return new Command<Module>("module", false, parameters, new Function<Element, Module>() {
+			@Override
+			public final Module value(final Element arg) {
+				return Module.valueOf(arg);
+			}
+		});
 	}
 }
